@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "f264122c-3c5a-47c1-a086-70b5a1b58b18",
+		"name": "Election System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16508898"
+	},
+	"item": [
+		{
+			"name": "Election Manager",
+			"item": [
+				{
+					"name": "New Candidate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"givenName\": \"Luis\",\r\n    \"familyName\": \"Zancanela\",\r\n    \"email\": \"email@dominio.com\",\r\n    \"jobTitle\": \"Java Developer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vote.dio.localhost/api/candidates",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"candidates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of Candidates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"candidateId\", jsonData[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/candidates",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"candidates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Candidate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"givenName\": \"Luis\",\r\n    \"familyName\": \"Zancanela\",\r\n    \"email\": \"newemail@dominio.com\",\r\n    \"jobTitle\": \"Systems Architect\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vote.dio.localhost/api/candidates/{{candidateId}}",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"candidates",
+								"{{candidateId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Election",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/elections",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"elections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Elections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/elections",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"elections"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voting App",
+			"item": [
+				{
+					"name": "ListElections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"electionToVote\", jsonData[0].id);\r",
+									"pm.collectionVariables.set(\"candidateToVote\", jsonData[0].candidates[0]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/voting",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"voting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/api/voting/elections/{{electionToVote}}/candidates/{{candidateToVote}}",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								"api",
+								"voting",
+								"elections",
+								"{{electionToVote}}",
+								"candidates",
+								"{{candidateToVote}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Result App",
+			"item": [
+				{
+					"name": "Get Results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://vote.dio.localhost/",
+							"protocol": "http",
+							"host": [
+								"vote",
+								"dio",
+								"localhost"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "graylog-config",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-By",
+						"value": "Postman",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"udp input\",\r\n    \"configuration\": {\r\n        \"recv_buffer_size\": 262144,\r\n        \"bind_address\": \"0.0.0.0\",\r\n        \"port\": 12201,\r\n        \"decompress_size_limit\": 8388608\r\n    },\r\n    \"type\": \"org.graylog2.inputs.gelf.udp.GELFUDPInput\",\r\n    \"global\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://logging.private.dio.localhost/api/system/inputs",
+					"protocol": "http",
+					"host": [
+						"logging",
+						"private",
+						"dio",
+						"localhost"
+					],
+					"path": [
+						"api",
+						"system",
+						"inputs"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "candidateId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "electionToVote",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "candidateToVote",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
